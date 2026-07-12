@@ -1,0 +1,77 @@
+/**
+ * Styles globaux
+ * ===============
+ * 
+ * Styles Tailwind et personnalisés
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  /* Boutons */
+  .btn-primary {
+    @apply px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors;
+  }
+
+  .btn-secondary {
+    @apply px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors;
+  }
+
+  .btn-danger {
+    @apply px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors;
+  }
+
+  .btn-small {
+    @apply px-3 py-1 text-sm rounded;
+  }
+
+  /* Conteneurs */
+  .container-base {
+    @apply max-w-7xl mx-auto px-4 py-6;
+  }
+
+  .card {
+    @apply bg-white rounded-lg shadow-md p-6;
+  }
+
+  /* Forms */
+  .input-base {
+    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500;
+  }
+
+  .label-base {
+    @apply block text-sm font-medium text-gray-700 mb-2;
+  }
+
+  /* Tables */
+  .table-responsive {
+    @apply overflow-x-auto;
+  }
+
+  .table-base {
+    @apply w-full border-collapse;
+  }
+
+  .table-base th {
+    @apply bg-gray-100 px-4 py-3 text-left font-semibold text-gray-700;
+  }
+
+  .table-base td {
+    @apply px-4 py-3 border-b border-gray-200;
+  }
+
+  .table-base tr:hover {
+    @apply bg-gray-50;
+  }
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  @apply bg-gray-50;
+}
+
+a {
+  @apply text-blue-600 hover:text-blue-800 transition-colors;
+}
