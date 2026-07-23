@@ -84,7 +84,7 @@ const getDevis = async (req, res, next) => {
 
     // Récupère les articles du devis
     const articlesResult = query(
-      `SELECT id, numero_ligne, designation, quantite, prix_unitaire, 
+      `SELECT id, numero_ligne, designation, unite, quantite, prix_unitaire,
               (quantite * prix_unitaire) as total_ligne
        FROM devis_articles 
        WHERE devis_id = ?
@@ -167,10 +167,10 @@ const createDevis = async (req, res, next) => {
       const articleId = uuidv4();
       query(
         `INSERT INTO devis_articles (
-          id, devis_id, numero_ligne, designation, quantite, prix_unitaire
-        ) VALUES (?, ?, ?, ?, ?, ?)`,
+          id, devis_id, numero_ligne, designation, unite, quantite, prix_unitaire
+        ) VALUES (?, ?, ?, ?, ?, ?, ?)` ,
         [
-          articleId, id, index + 1, article.designation, 
+          articleId, id, index + 1, article.designation, article.unite || 'pièce',
           parseFloat(article.quantite), parseFloat(article.prix_unitaire)
         ]
       );
@@ -273,10 +273,10 @@ const updateDevis = async (req, res, next) => {
         const articleId = uuidv4();
         query(
           `INSERT INTO devis_articles (
-            id, devis_id, numero_ligne, designation, quantite, prix_unitaire
-          ) VALUES (?, ?, ?, ?, ?, ?)`,
+            id, devis_id, numero_ligne, designation, unite, quantite, prix_unitaire
+          ) VALUES (?, ?, ?, ?, ?, ?, ?)` ,
           [
-            articleId, id, index + 1, article.designation,
+            articleId, id, index + 1, article.designation, article.unite || 'pièce',
             parseFloat(article.quantite), parseFloat(article.prix_unitaire)
           ]
         );

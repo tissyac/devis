@@ -157,6 +157,7 @@ function createSchema() {
       devis_id TEXT NOT NULL,
       numero_ligne INTEGER NOT NULL,
       designation TEXT NOT NULL,
+      unite TEXT DEFAULT 'pièce',
       quantite DECIMAL(10, 2) NOT NULL,
       prix_unitaire DECIMAL(12, 2) NOT NULL,
       created_at DATETIME DEFAULT (datetime('now')),
@@ -218,9 +219,20 @@ function createSchema() {
   `;
 
   db.exec(schema);
+  ensureDevisUnitColumn();
   ensureDevisEmailColumn();
   ensureDevisDateColumn();
   ensureBonVersementColumns();
+}
+
+function ensureDevisUnitColumn() {
+  const result = db.exec('PRAGMA table_info(devis_articles)');
+  const columns = result[0]?.values || [];
+
+  if (!columns.some(column => column[1] === 'unite')) {
+    db.exec("ALTER TABLE devis_articles ADD COLUMN unite TEXT DEFAULT 'pièce'");
+    saveDatabase();
+  }
 }
 
 function ensureDevisEmailColumn() {

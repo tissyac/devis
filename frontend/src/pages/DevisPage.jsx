@@ -54,7 +54,7 @@ export default function DevisPage() {
     client_adresse: '',
     client_telephone: '',
     client_email: '',
-    articles: [{ designation: '', quantite: 1, prix_unitaire: 0 }],
+    articles: [{ designation: '', unite: 'pièce', quantite: 1, prix_unitaire: 0 }],
     tva: 0
   });
 
@@ -98,7 +98,7 @@ export default function DevisPage() {
   const addArticle = () => {
     setFormData(prev => ({
       ...prev,
-      articles: [...prev.articles, { designation: '', quantite: 1, prix_unitaire: 0 }]
+      articles: [...prev.articles, { designation: '', unite: 'pièce', quantite: 1, prix_unitaire: 0 }]
     }));
   };
 
@@ -135,6 +135,7 @@ export default function DevisPage() {
         ...formData,
         articles: formData.articles.map(a => ({
           designation: a.designation,
+          unite: a.unite,
           quantite: parseFloat(a.quantite) || 0,
           prix_unitaire: parseFloat(a.prix_unitaire) || 0
         }))
@@ -191,7 +192,7 @@ export default function DevisPage() {
                     client_adresse: '',
                     client_telephone: '',
                     client_email: '',
-                    articles: [{ designation: '', quantite: 1, prix_unitaire: 0 }],
+                    articles: [{ designation: '', unite: 'pièce', quantite: 1, prix_unitaire: 0 }],
                     tva: 0
                   });
                 }}
@@ -320,6 +321,7 @@ export default function DevisPage() {
                   <tr className="border-b-2 border-gray-300 bg-gray-50">
                     <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 w-12">N°</th>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 flex-1">Désignation</th>
+                    <th className="px-4 py-3 text-center text-sm font-semibold text-gray-700 w-24">Unité</th>
                     <th className="px-4 py-3 text-center text-sm font-semibold text-gray-700 w-24">Quantité</th>
                     <th className="px-4 py-3 text-center text-sm font-semibold text-gray-700 w-32">Prix Unitaire (DA)</th>
                     <th className="px-4 py-3 text-center text-sm font-semibold text-gray-700 w-32">Total (DA)</th>
@@ -351,6 +353,16 @@ export default function DevisPage() {
                             onChange={(e) => handleArticleChange(index, 'quantite', e.target.value)}
                             className="w-full px-2 py-1 border border-gray-300 rounded text-center focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                           />
+                        </td>
+                        <td className="px-2 py-2">
+                          <select value={article.unite || 'pièce'} onChange={(e) => handleArticleChange(index, 'unite', e.target.value)} className="w-full px-2 py-1 border border-gray-300 rounded text-center focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                            <option value="pièce">Pièce</option>
+                            <option value="m²">m²</option>
+                            <option value="ml">ml</option>
+                            <option value="kg">kg</option>
+                            <option value="heure">Heure</option>
+                            <option value="forfait">Forfait</option>
+                          </select>
                         </td>
                         <td className="px-4 py-3">
                           <input
