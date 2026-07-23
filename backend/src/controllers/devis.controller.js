@@ -341,7 +341,7 @@ const generatePDF = async (req, res, next) => {
 
     const devis = devisResult.rows[0];
     const articlesResult = query(
-      `SELECT id, numero_ligne, designation, quantite, prix_unitaire, 
+      `SELECT id, numero_ligne, designation, unite, quantite, prix_unitaire,
               (quantite * prix_unitaire) as total_ligne
        FROM devis_articles WHERE devis_id = ? ORDER BY numero_ligne ASC`,
       [id]

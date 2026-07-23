@@ -77,7 +77,7 @@ const getFacture = async (req, res, next) => {
  */
 const createFacture = async (req, res, next) => {
   try {
-    const { numero, client, montant, description } = req.body;
+    const { numero, client, montant, description, articles = [] } = req.body;
 
     if (!numero || !client || montant === undefined) {
       throw new AppError('Champs requis: numero, client, montant', 400);
@@ -87,7 +87,7 @@ const createFacture = async (req, res, next) => {
     await query(
       `INSERT INTO factures (id, numero, client, montant, description, statut, created_at, user_id) 
        VALUES ($1, $2, $3, $4, $5, $6, NOW(), $7)`,
-      [id, numero, client, montant, description || '', 'EN_ATTENTE', req.user.id]
+      [id, numero, client, montant, JSON.stringify({ description: description || '', articles }), 'EN_ATTENTE', req.user.id]
     );
 
     const created = await query('SELECT * FROM factures WHERE id = $1', [id]);
@@ -235,16 +235,20 @@ const generatePDF = async (req, res, next) => {
     const clientName = facture.client || '-';
     const contactEmail = '-';
     const contactPhone = '-';
-    const description = facture.description || 'Montant de la facture';
+    let storedArticles = [];
+    try {
+      storedArticles = facture.description ? JSON.parse(facture.description).articles || [] : [];
+    } catch {
+      storedArticles = [];
+    }
 
-    const items = [
-      {
-        designation: description,
-        quantite: 1,
-        prix_unitaire: montantHT,
-        total_ligne: montantHT
-      }
-    ];
+    const items = storedArticles.length > 0 ? storedArticles : [{
+      designation: facture.description || 'Montant de la facture',
+      unite: 'forfait',
+      quantite: 1,
+      prix_unitaire: montantHT,
+      total_ligne: montantHT
+    }];
 
     const logoPath = path.resolve(__dirname, '../../public', COMPANY_INFO.logo.replace(/^\//, ''));
     const hasLogo = fs.existsSync(logoPath);

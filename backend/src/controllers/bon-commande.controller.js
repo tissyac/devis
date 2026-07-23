@@ -77,7 +77,7 @@ const getBon = async (req, res, next) => {
  */
 const createBon = async (req, res, next) => {
   try {
-    const { numero, fournisseur, fournisseur_nom, montant, description, articles } = req.body;
+    const { numero, fournisseur, fournisseur_nom, montant, description, articles = [] } = req.body;
     const fournisseurValue = (fournisseur || fournisseur_nom || '').toString().trim();
     const parsedMontant = montant !== undefined
       ? Number(montant)
@@ -93,7 +93,7 @@ const createBon = async (req, res, next) => {
     await query(
       `INSERT INTO bons_commande (id, numero, fournisseur, montant, description, statut, created_at, user_id) 
        VALUES ($1, $2, $3, $4, $5, $6, NOW(), $7)`,
-      [id, numero, fournisseurValue, parsedMontant, description || '', 'EN_ATTENTE', req.user.id]
+      [id, numero, fournisseurValue, parsedMontant, JSON.stringify({ description: description || '', articles }), 'EN_ATTENTE', req.user.id]
     );
 
     const created = await query('SELECT * FROM bons_commande WHERE id = $1', [id]);
@@ -241,16 +241,20 @@ const generatePDF = async (req, res, next) => {
     const clientName = bon.fournisseur || '-';
     const contactEmail = '-';
     const contactPhone = '-';
-    const description = bon.description || 'Montant du bon de commande';
+    let storedArticles = [];
+    try {
+      storedArticles = bon.description ? JSON.parse(bon.description).articles || [] : [];
+    } catch {
+      storedArticles = [];
+    }
 
-    const items = [
-      {
-        designation: description,
-        quantite: 1,
-        prix_unitaire: montantHT,
-        total_ligne: montantHT
-      }
-    ];
+    const items = storedArticles.length > 0 ? storedArticles : [{
+      designation: bon.description || 'Montant du bon de commande',
+      unite: 'forfait',
+      quantite: 1,
+      prix_unitaire: montantHT,
+      total_ligne: montantHT
+    }];
 
     const logoPath = path.resolve(__dirname, '../../public', COMPANY_INFO.logo.replace(/^\//, ''));
     const hasLogo = fs.existsSync(logoPath);
