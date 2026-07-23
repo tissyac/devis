@@ -431,9 +431,10 @@ const generatePDF = async (req, res, next) => {
     const cols = {
       no: leftX + 8,
       desc: leftX + 36,
-      qty: leftX + 308,
-      pu: leftX + 350,
-      total: leftX + 438
+      unit: leftX + 268,
+      qty: leftX + 312,
+      pu: leftX + 354,
+      total: leftX + 442
     };
 
     doc
@@ -441,7 +442,8 @@ const generatePDF = async (req, res, next) => {
       .fontSize(9)
       .fillColor(colors.white)
       .text('N°', cols.no, tableTop + 8, { width: 24, align: 'center' })
-      .text('Désignation', cols.desc, tableTop + 8, { width: 250 })
+      .text('Désignation', cols.desc, tableTop + 8, { width: 228 })
+      .text('Unité', cols.unit, tableTop + 8, { width: 40, align: 'center' })
       .text('Qté', cols.qty, tableTop + 8, { width: 34, align: 'center' })
       .text('P.U.', cols.pu, tableTop + 8, { width: 80, align: 'right' })
       .text('Total', cols.total, tableTop + 8, { width: 90, align: 'right' });
@@ -477,7 +479,8 @@ const generatePDF = async (req, res, next) => {
           .fontSize(tableFontSize)
           .fillColor(colors.text)
           .text(index + 1, cols.no, rowY + 5, { width: 24, align: 'center' })
-          .text(descriptionText, cols.desc, rowY + 5, { width: 250 })
+          .text(descriptionText, cols.desc, rowY + 5, { width: 228 })
+          .text(article.unite || 'pièce', cols.unit, rowY + 5, { width: 40, align: 'center' })
           .text(String(article.quantite), cols.qty, rowY + 5, { width: 34, align: 'center' })
           .text(formatPrice(article.prix_unitaire) + ' DA', cols.pu, rowY + 5, { width: 80, align: 'right', lineBreak: false })
           .font('Helvetica-Bold')
