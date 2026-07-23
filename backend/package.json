@@ -7,6 +7,7 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "build": "echo 'Build complete'",
+    "postinstall": "node scripts/verify-sql-wasm.js",
     "test": "jest --watchAll=false",
     "test:watch": "jest",
     "db:init": "node scripts/init-db.js",

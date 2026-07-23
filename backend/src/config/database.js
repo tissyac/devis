@@ -9,13 +9,16 @@ const initSqlJs = require('sql.js');
 const fs = require('fs');
 const path = require('path');
 
+const configuredDbPath = process.env.DB_PATH || './data/erp.db';
+const dbPath = path.resolve(__dirname, '../..', configuredDbPath);
+
 // Crée le dossier data s'il n'existe pas
-const dataDir = path.join(__dirname, '../../data');
+const dataDir = path.dirname(dbPath);
 if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
 }
 
-const dbPath = path.join(dataDir, 'erp.db');
+const sqlJsDistPath = path.dirname(require.resolve('sql.js'));
 let db = null;
 let SQL = null;
 
@@ -25,7 +28,7 @@ let SQL = null;
 async function initDatabase() {
   if (!SQL) {
     SQL = await initSqlJs({
-      locateFile: file => path.join(__dirname, '../../node_modules/sql.js/dist/', file)
+      locateFile: file => path.join(sqlJsDistPath, file)
     });
   }
 

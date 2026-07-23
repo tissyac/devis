@@ -96,7 +96,7 @@ Cliquez **"Add Environment Variable"** et ajoutez **CHAQUE** variable:
 
 | Key | Value |
 |-----|-------|
-| `JWT_SECRET` | Laissez **VIDE** - Render le génère automatiquement |
+| `JWT_SECRET` | Une clé aléatoire longue (obligatoire) |
 
 Ou générez-le vous-même:
 ```bash
@@ -112,9 +112,9 @@ a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6
 
 | Key | Value |
 |-----|-------|
-| `CORS_ORIGIN` | `https://saradecorex.vercel.app` |
+| `CORS_ORIGIN` | `https://votre-frontend.vercel.app` |
 
-⚠️ **REMPLACER** `saradecorex` par votre URL Vercel si différente.
+⚠️ Remplacez cette valeur par l'URL Vercel réelle de votre frontend.
 
 ### 5.5 Base de Données
 
@@ -131,9 +131,8 @@ Copier-coller cette liste:
 
 ```
 NODE_ENV = production
-PORT = 5000
-JWT_SECRET = (vide ou votre clé)
-CORS_ORIGIN = https://saradecorex.vercel.app
+JWT_SECRET = (une clé aléatoire longue, obligatoire)
+CORS_ORIGIN = https://votre-frontend.vercel.app
 DB_TYPE = sqlite
 DB_PATH = ./data/erp.db
 ```
@@ -224,9 +223,8 @@ Region: Oregon (ou EU)
 
 ```
 NODE_ENV          → production
-PORT              → 5000
-JWT_SECRET        → (auto ou votre clé 32+ chars)
-CORS_ORIGIN       → https://saradecorex.vercel.app
+JWT_SECRET        → une clé aléatoire longue
+CORS_ORIGIN       → https://votre-frontend.vercel.app
 DB_TYPE           → sqlite
 DB_PATH           → ./data/erp.db
 ```
@@ -315,9 +313,8 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 - [ ] **Region**: `Oregon` ou Europe
 - [ ] **Plan**: `Free`
 - [ ] **NODE_ENV**: `production`
-- [ ] **PORT**: `5000`
-- [ ] **JWT_SECRET**: (vide ou rempli)
-- [ ] **CORS_ORIGIN**: `https://saradecorex.vercel.app`
+- [ ] **JWT_SECRET**: une clé aléatoire longue
+- [ ] **CORS_ORIGIN**: l'URL Vercel réelle
 - [ ] **DB_TYPE**: `sqlite`
 - [ ] **DB_PATH**: `./data/erp.db`
 
